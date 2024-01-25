@@ -1,11 +1,14 @@
 package com.cinarCorp.firmChat.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -18,11 +21,14 @@ import java.util.List;
 @Table(name = "tbl_users")
 public class User extends BaseEntity {
 
+    @NotBlank
     private String username;
     private String password;
     private String firstName;
     private String lastName;
+    @Email
     private String email;
+    @NotBlank
     private String phoneNumber;
     private boolean isActive;
     private boolean accountNonExpired;

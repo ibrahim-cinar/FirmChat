@@ -36,7 +36,24 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<?> usernameNotFoundExceptionHandler(UsernameNotFoundException UsernameNotFoundException)  {
+    public ResponseEntity<?> UsernameNotFoundExceptionHandler(UsernameNotFoundException UsernameNotFoundException)  {
         return new ResponseEntity<>(UsernameNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> EntityNotFoundExceptionHandler(EntityNotFoundException EntityNotFoundException)  {
+        return new ResponseEntity<>(EntityNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(EmailAlreadyExistException.class)
+    public ResponseEntity<?> EmailAlreadyExistExceptionHandler(EmailAlreadyExistException EmailAlreadyExistException)  {
+        return new ResponseEntity<>(EmailAlreadyExistException.getMessage(), HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity<?> EmailNotFoundExceptionHandler(EmailNotFoundException EmailNotFoundException)  {
+        return new ResponseEntity<>(EmailNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(InvalidInputException.class)
+    public ResponseEntity<?> InvalidInputExceptionHandler(InvalidInputException InvalidInputException)  {
+        return new ResponseEntity<>(InvalidInputException.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }

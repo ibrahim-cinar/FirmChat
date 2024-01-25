@@ -16,11 +16,12 @@ public class FirmChatApplication {
 	}
 
 	@Bean
-	public OpenAPI springShopOpenAPI(@Value("${application-description}") String description,
+	public OpenAPI customOpenAPI(@Value("${application-description}") String description,
 									 @Value("${application-version}") String version) {
-		return new OpenAPI().info(new Info().title("Firm Chat API").version(version)
+		return new OpenAPI().info(new Info().version(version)
+				.title("Firm Chat API")
 				.description(description)
-				.license(new License().name("Apache 2.0").url("http://springdoc.org")));
+				.license(new License().name("Simple Web News API Licence")));
 
 	}
 }

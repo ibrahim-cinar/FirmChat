@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tbl_users")
-public class User extends BaseEntity {
+public class User extends BaseEntity implements UserDetails {
 
     @NotBlank
     private String username;
@@ -69,4 +70,5 @@ public class User extends BaseEntity {
         this.phoneNumber = phoneNumber;
         this.groups = groups;
     }
+
 }

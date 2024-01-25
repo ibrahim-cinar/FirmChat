@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -47,4 +48,25 @@ public class User extends BaseEntity {
     private List<Group> groups;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Message> messages;
+
+    public User( String username,
+                String password, String firstName, String lastName,
+                String email, String phoneNumber,
+                boolean isActive, List<Role> authorities) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.isActive = isActive;
+        this.authorities = authorities;
+    }
+
+    public User(String username, String email, String phoneNumber, List<Group> groups) {
+        this.username = username;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.groups = groups;
+    }
 }

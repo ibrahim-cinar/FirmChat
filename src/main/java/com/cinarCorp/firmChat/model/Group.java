@@ -27,4 +27,5 @@ public class Group extends BaseEntity {
     @OneToMany(mappedBy = "group",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Message> messages;
 
+
 }

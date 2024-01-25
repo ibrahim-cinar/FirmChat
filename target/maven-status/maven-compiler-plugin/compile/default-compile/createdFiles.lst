@@ -1,0 +1,12 @@
+com\cinarCorp\firmChat\config\PasswordEncoderConfig.class
+com\cinarCorp\firmChat\model\BaseEntity$BaseEntityBuilder.class
+com\cinarCorp\firmChat\model\User.class
+com\cinarCorp\firmChat\model\Group$GroupBuilderImpl.class
+com\cinarCorp\firmChat\model\Group.class
+com\cinarCorp\firmChat\model\BaseEntity.class
+com\cinarCorp\firmChat\model\User$UserBuilder.class
+com\cinarCorp\firmChat\model\Group$GroupBuilder.class
+com\cinarCorp\firmChat\FirmChatApplication.class
+com\cinarCorp\firmChat\model\Role.class
+com\cinarCorp\firmChat\exception\GeneralExceptionHandler.class
+com\cinarCorp\firmChat\model\User$UserBuilderImpl.class

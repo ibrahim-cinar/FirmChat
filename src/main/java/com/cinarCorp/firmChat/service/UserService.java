@@ -3,7 +3,7 @@ package com.cinarCorp.firmChat.service;
 import com.cinarCorp.firmChat.dto.Request.CreateUserRequest;
 import com.cinarCorp.firmChat.dto.UserDto;
 import com.cinarCorp.firmChat.dto.convert.UserDtoConverter;
-import com.cinarCorp.firmChat.exception.UsernameNotFoundException;
+import com.cinarCorp.firmChat.exception.*;
 import com.cinarCorp.firmChat.model.User;
 import com.cinarCorp.firmChat.repository.UserRepository;
 import org.slf4j.Logger;
@@ -45,7 +45,7 @@ public class UserService {
         return userRepository.findUserByEmail(email);
     }
     public UserDto getUserByEmail(String email) {
-        var userMail = findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User could not find by email " + email));
+        var userMail = findUserByEmail(email).orElseThrow(() -> new EmailNotFoundException("User could not find by email " + email));
         return userDtoConverter.convert(userMail);
     }
 
@@ -78,16 +78,19 @@ public class UserService {
     }
     public User createUserFromRequest(CreateUserRequest request) {
         if(!isInputValid(request)){
-            throw new IllegalArgumentException("Invalid input");
+            throw new InvalidInputException("Invalid input");
         }
         if(!isEmailUnique(request.getEmail())){
-            throw new IllegalArgumentException("Email already exists");
+            throw new EmailAlreadyExistException("Email already exists");
         }
         if(!isUsernameUnique(request.getUsername())){
-            throw new IllegalArgumentException("Username already exists");
+            throw new UsernameAlreadyExistException("Username already exists");
         }
         if(!patternMatches(request.getEmail(),"^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")){
-            throw new IllegalArgumentException("Email is not valid");
+            throw new InvalidInputException("Email is not valid");
+        }
+        if(!patternMatches(request.getPhoneNumber(),"\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
+            throw new InvalidInputException("Phone number is not valid");
         }
         return createUser(request);
     }

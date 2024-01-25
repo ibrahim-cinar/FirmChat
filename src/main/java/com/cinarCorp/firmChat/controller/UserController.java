@@ -1,14 +1,12 @@
 package com.cinarCorp.firmChat.controller;
 
+import com.cinarCorp.firmChat.dto.Request.CreateUserRequest;
 import com.cinarCorp.firmChat.dto.UserDto;
 import com.cinarCorp.firmChat.model.User;
 import com.cinarCorp.firmChat.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.method.P;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +28,9 @@ public class UserController {
     public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
         return ResponseEntity.ok(userService.getUserByUsername(username));
 
+    }
+    @PostMapping("/newUser")
+    public ResponseEntity<UserDto> createUser(@RequestBody CreateUserRequest createUserRequest) {
+        return ResponseEntity.ok(userService.createNewUser(createUserRequest));
     }
 }

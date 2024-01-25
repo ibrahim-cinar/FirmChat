@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql
+    restart: always
+    container_name: cinar-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cinar
+      MYSQL_USER: cinar
+      MYSQL_PASSWORD: cinar-1907
+    ports:
+      - '3306:3306'

@@ -5,7 +5,6 @@ import com.cinarCorp.firmChat.dto.UserDto;
 import com.cinarCorp.firmChat.model.User;
 import com.cinarCorp.firmChat.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

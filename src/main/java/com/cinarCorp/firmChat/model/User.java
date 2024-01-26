@@ -71,4 +71,22 @@ public class User extends BaseEntity implements UserDetails {
         this.groups = groups;
     }
 
+    public User(String username, String password, String firstName,
+                String lastName, String email, String phoneNumber,
+                boolean isActive, boolean accountNonExpired,
+                boolean accountNonLocked, boolean credentialsNonExpired,
+                boolean isEnabled, List<Role> authorities) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.isActive = isActive;
+        this.accountNonExpired = accountNonExpired;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.isEnabled = isEnabled;
+        this.authorities = authorities;
+    }
 }

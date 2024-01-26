@@ -74,7 +74,8 @@ public class UserService {
         return new User(request.getUsername(),bCryptPasswordEncoder.encode(request.getPassword()),
                 request.getFirstName(),request.getLastName(),
                 request.getEmail(),request.getPhoneNumber(),
-                true,request.getAuthorities());
+                true,true,true,
+                true,true,request.getAuthorities());
     }
     public User createUserFromRequest(CreateUserRequest request) {
         if(!isInputValid(request)){

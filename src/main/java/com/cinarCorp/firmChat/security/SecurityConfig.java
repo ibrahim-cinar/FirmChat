@@ -1,32 +1,57 @@
 package com.cinarCorp.firmChat.security;
 
+import com.cinarCorp.firmChat.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+    private final JwtAuthFilter jwtAuthFilter;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter, UserService userService, PasswordEncoder passwordEncoder) {
+        this.jwtAuthFilter = jwtAuthFilter;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        security
-                .headers(x -> x.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/swagger-ui/index.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/api/v1/user/newUser/**","/api/v1/user/**").permitAll()
-                        .anyRequest().authenticated())
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(Customizer.withDefaults());
-        return security.build();
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(x->x.requestMatchers("/api/v1/auth/**","/api/v1/user/newUser").permitAll()
+
+                .requestMatchers("/api/v1/user/**").hasRole("USER"))
+                .sessionManagement(x->x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        return authenticationProvider;
+    }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+
     }
 }

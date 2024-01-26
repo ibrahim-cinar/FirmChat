@@ -6,8 +6,11 @@ import com.cinarCorp.firmChat.dto.convert.UserDtoConverter;
 import com.cinarCorp.firmChat.exception.*;
 import com.cinarCorp.firmChat.model.User;
 import com.cinarCorp.firmChat.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +19,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
@@ -61,6 +64,11 @@ public class UserService {
     protected boolean isUsernameUnique(String username) {
         Optional<User> existingUserUsername = userRepository.findUserByUsername(username);
         return existingUserUsername.isEmpty();
+    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findUserByUsername(username);
+        return  user.orElseThrow(EntityNotFoundException::new);
     }
     private static boolean isInputValid(CreateUserRequest request) {
         return request.getUsername() != null &&

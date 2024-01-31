@@ -20,7 +20,6 @@ public class JwtService {
     private String SECRET;
     public String generateToken(String username){
         Map<String, Object> claims = new HashMap<>();
-        claims.put("can", "wia");
         return createToken(claims, username);
     }
     public Boolean validateToken(String token, UserDetails userDetails){

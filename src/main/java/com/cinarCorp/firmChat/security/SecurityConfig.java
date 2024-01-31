@@ -1,5 +1,6 @@
 package com.cinarCorp.firmChat.security;
 
+import com.cinarCorp.firmChat.model.Role;
 import com.cinarCorp.firmChat.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,10 +35,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(x->x.requestMatchers("http://localhost:8080/v1/api/auth/newUser","api/v1/auth/welcome","/api/v1/auth/**").permitAll()
+                .authorizeHttpRequests(
+                        x -> x
+                                .requestMatchers("/api/v1/auth/newUser", "/api/v1/auth/generateToken").permitAll()
+                                .requestMatchers("/api/v1/user/**").authenticated()
+                                .requestMatchers("/api/v1/auth/admin").hasRole("ADMIN")
+                                .anyRequest().authenticated())
 
-                .requestMatchers("/api/v1/auth/getAllUser").hasRole("USER")
-                .requestMatchers("/api/v1/auth/admin").hasRole("ADMIN"))
                 .sessionManagement(x->x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

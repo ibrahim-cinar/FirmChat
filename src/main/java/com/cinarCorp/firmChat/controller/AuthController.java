@@ -46,10 +46,7 @@ public class AuthController {
         log.info("Invalid username {}" +authRequest.getUsername());
         throw new UsernameNotFoundException("Invalid username {}" +authRequest.getUsername());
     }
-    @GetMapping("/user")
-    public ResponseEntity<List<User>> getAllUsers(){
-        return ResponseEntity.ok(userService.getAllUsers());
-    }
+
     @GetMapping("/admin")
     public String admin(){
         return "admin";

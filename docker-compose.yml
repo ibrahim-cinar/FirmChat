@@ -11,4 +11,4 @@ services:
       MYSQL_USER: cinar
       MYSQL_PASSWORD: cinar-1907
     ports:
-      - '3306:3306'
+      - '8082:8082'

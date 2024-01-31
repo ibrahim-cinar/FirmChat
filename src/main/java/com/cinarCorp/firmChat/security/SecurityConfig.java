@@ -34,9 +34,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(x->x.requestMatchers("/api/v1/auth/**","/api/v1/user/newUser").permitAll()
+                .authorizeHttpRequests(x->x.requestMatchers("http://localhost:8080/v1/api/auth/newUser","api/v1/auth/welcome","/api/v1/auth/**").permitAll()
 
-                .requestMatchers("/api/v1/user/**").hasRole("USER"))
+                .requestMatchers("/api/v1/auth/getAllUser").hasRole("USER")
+                .requestMatchers("/api/v1/auth/admin").hasRole("ADMIN"))
                 .sessionManagement(x->x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -49,6 +50,7 @@ public class SecurityConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder);
         return authenticationProvider;
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
